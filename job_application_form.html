@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Job Application | Career Portal</title>
+<style>
+    :root {
+      --ink: #172033; --muted: #667085; --line: #e5e9f0;
+      --primary: #3157d5; --primary-dark: #2445b5; --bg: #f5f7fb;
+      --card: #fff; --soft: #f0f4ff; --danger: #c43232;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font: 15px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .topbar { background: #fff; border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: 1000px; margin: auto; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.3px; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; color: white; background: var(--primary); border-radius: 10px; }
+    .secure { color: var(--muted); font-size: 12px; display: flex; align-items: center; gap: 6px; }
+    main { max-width: 1000px; margin: 38px auto 70px; padding: 0 24px; }
+    .intro { margin-bottom: 25px; }
+    .eyebrow { color: var(--primary); text-transform: uppercase; font-size: 11px; font-weight: 800; letter-spacing: 1.3px; }
+    h1 { font-size: clamp(28px, 4vw, 38px); letter-spacing: -1.2px; line-height: 1.15; margin: 8px 0; }
+    .intro p { color: var(--muted); margin: 0; }
+    .job-card { background: #172033; color: white; border-radius: 15px; padding: 20px 22px; display: flex; justify-content: space-between; gap: 20px; align-items: center; margin: 25px 0; }
+    .job-card small { color: #c5cee0; }
+    .job-card h2 { font-size: 18px; margin: 2px 0 5px; }
+    .job-meta { color: #d7deeb; font-size: 13px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .job-type { border: 1px solid #64718a; border-radius: 30px; padding: 6px 12px; font-size: 12px; white-space: nowrap; }
+    .progress-wrap { margin: 24px 0; }
+    .progress-label { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+    .progress { height: 6px; background: #e4e8f0; border-radius: 10px; overflow: hidden; }
+    .progress span { display: block; width: 0; height: 100%; background: var(--primary); transition: width .2s; }
+    form { display: grid; gap: 18px; }
+    .section { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 25px; }
+    .section-head { display: flex; gap: 13px; align-items: flex-start; margin-bottom: 21px; }
+    .number { width: 30px; height: 30px; flex: 0 0 30px; border-radius: 9px; background: var(--soft); color: var(--primary); display: grid; place-items: center; font-weight: 800; }
+    h3 { font-size: 17px; margin: 0 0 3px; }
+    .section-head p { color: var(--muted); font-size: 12px; margin: 0; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px 20px; }
+    .field { min-width: 0; }
+    .full { grid-column: 1 / -1; }
+    label, .legend { display: block; font-weight: 650; font-size: 13px; margin-bottom: 7px; }
+    .required { color: var(--danger); }
+    input:not([type=checkbox]):not([type=radio]), select, textarea {
+      width: 100%; border: 1px solid #d9deea; background: #fff; border-radius: 9px;
+      padding: 11px 12px; color: var(--ink); font: inherit; outline: none; transition: border .15s, box-shadow .15s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary) !important; box-shadow: 0 0 0 3px #3157d51a; }
+    input::placeholder, textarea::placeholder { color: #a0a8b7; }
+    textarea { min-height: 110px; resize: vertical; }
+    .hint { font-size: 11px; color: var(--muted); margin: 6px 0 0; }
+    .choice-row { display: flex; flex-wrap: wrap; gap: 10px 18px; padding: 5px 0; }
+    .choice { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 450; margin: 0; cursor: pointer; }
+    input[type=checkbox], input[type=radio] { accent-color: var(--primary); width: 16px; height: 16px; margin: 0; }
+    .upload { border: 1.5px dashed #c8d1e2; border-radius: 11px; padding: 20px; background: #fafbfe; text-align: center; }
+    .upload input { max-width: 100%; font-size: 12px; }
+    .upload strong { display: block; font-size: 13px; margin-bottom: 3px; }
+    .upload p { color: var(--muted); font-size: 11px; margin: 0 0 12px; }
+    .file-name { display: block; color: var(--primary); font-size: 12px; margin-top: 8px; overflow-wrap: anywhere; }
+    .conditional { display: none; }
+    .conditional.show { display: block; }
+    .actions { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 5px 2px; }
+    .actions p { color: var(--muted); font-size: 11px; margin: 0; }
+    button { border: 0; border-radius: 9px; padding: 12px 22px; background: var(--primary); color: white; font: inherit; font-weight: 700; cursor: pointer; }
+    button:hover { background: var(--primary-dark); }
+    button:disabled { opacity: .6; cursor: not-allowed; }
+    .error { color: var(--danger); font-size: 12px; margin-top: 5px; display: none; }
+    .notice { display: none; background: #ecfdf3; border: 1px solid #b7ebc9; color: #17663a; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+    .notice.show { display: block; }
+    .notice h3 { margin-bottom: 4px; }
+    .notice p { margin: 0; font-size: 13px; }
+    footer { text-align: center; color: var(--muted); font-size: 11px; padding: 25px; }
+    @media (max-width: 650px) {
+      main { margin-top: 25px; padding: 0 14px; }
+      .topbar-inner { padding: 14px; }
+      .job-card { align-items: flex-start; flex-direction: column; }
+      .section { padding: 19px 16px; }
+      .grid { grid-template-columns: 1fr; gap: 15px; }
+      .full { grid-column: auto; }
+      .actions { align-items: flex-start; flex-direction: column; }
+      .actions button { width: 100%; }
+    }
+  
+    /* Multi-step application wizard */
+    .stepper { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 22px 0 18px; }
+    .step-item { display: flex; flex-direction: column; align-items: center; gap: 7px; position: relative; color: #98a2b3; text-align: center; min-width: 0; }
+    .step-item:not(:last-child)::after { content: ""; position: absolute; height: 2px; background: #e1e6ef; width: calc(100% - 42px); left: calc(50% + 22px); top: 16px; }
+    .step-circle { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; border: 1px solid #d8deea; background: #fff; font-size: 12px; font-weight: 800; z-index: 1; }
+    .step-name { font-size: 11px; font-weight: 650; white-space: nowrap; }
+    .step-item.active { color: var(--primary); }
+    .step-item.active .step-circle, .step-item.done .step-circle { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .step-item.done { color: #344054; }
+    .step-item.done:not(:last-child)::after { background: var(--primary); }
+    .wizard-step { display: none; }
+    .wizard-step.active { display: block; animation: stepIn .22s ease; }
+    @keyframes stepIn { from { opacity: .45; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .step-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); margin-top: 24px; padding-top: 18px; }
+    .step-actions p { color: var(--muted); font-size: 11px; margin: 0; }
+    .step-actions button { min-width: 125px; }
+    .step-actions .back-btn { background: #fff; color: #344054; border: 1px solid #d9deea; }
+    .step-actions .back-btn:hover { background: #f8f9fc; }
+    @media (max-width: 650px) {
+      .stepper { gap: 2px; margin: 18px 0; }
+      .step-name { font-size: 9px; white-space: normal; }
+      .step-circle { width: 29px; height: 29px; }
+      .step-item:not(:last-child)::after { top: 14px; width: calc(100% - 32px); left: calc(50% + 17px); }
+      .step-actions { flex-wrap: wrap; }
+      .step-actions p { width: 100%; }
+      .step-actions button { flex: 1; }
+    }
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="topbar-inner">
+<div class="brand"><span class="brand-mark">C</span> CareerPortal</div>
+<div class="secure">▣   Application form</div>
+</div>
+</header>
+<main>
+<div class="intro">
+<div class="eyebrow">Careers / Apply</div>
+<h1>Let's get to know you.</h1>
+<p>Complete the application below. Fields marked with <span class="required">*</span> are required.</p>
+</div>
+<div class="job-card">
+<div>
+<small>YOU'RE APPLYING FOR</small>
+<h2>Software Engineer — Entry Level</h2>
+<div class="job-meta"><span>⌖ Bengaluru, India</span><span>◷ Full-time</span><span>◇ Engineering</span></div>
+</div>
+<span class="job-type">On-site / Hybrid</span>
+</div>
+<div class="progress-wrap">
+<div class="progress-label"><span>Application progress</span><span id="progressText">0% completed</span></div>
+<div class="progress"><span id="progressBar"></span></div>
+</div><div aria-label="Application steps" class="stepper" id="stepper"><div class="step-item" data-step-indicator="0"><span class="step-circle">1</span><span class="step-name">Personal</span></div><div class="step-item" data-step-indicator="1"><span class="step-circle">2</span><span class="step-name">Preferences</span></div><div class="step-item" data-step-indicator="2"><span class="step-circle">3</span><span class="step-name">Education</span></div><div class="step-item" data-step-indicator="3"><span class="step-circle">4</span><span class="step-name">Experience</span></div><div class="step-item" data-step-indicator="4"><span class="step-circle">5</span><span class="step-name">Documents</span></div><div class="step-item" data-step-indicator="5"><span class="step-circle">6</span><span class="step-name">Review</span></div></div>
+<div class="notice" id="successNotice" role="status">
+<h3>Application preview completed!</h3>
+<p>This is a front-end demo. Your information has not been sent or saved to a server.</p>
+</div>
+<form id="applicationForm">
+<section class="section wizard-step active" data-step="0">
+<div class="section-head"><span class="number">01</span><div><h3>Personal information</h3><p>Basic details so the hiring team can identify you.</p></div></div>
+<div class="grid">
+<div class="field"><label for="firstName">First name <span class="required">*</span></label><input autocomplete="given-name" id="firstName" name="firstName" placeholder="e.g. Alex" required=""/></div>
+<div class="field"><label for="lastName">Last name <span class="required">*</span></label><input autocomplete="family-name" id="lastName" name="lastName" placeholder="e.g. Morgan" required=""/></div>
+<div class="field"><label for="email">Email address <span class="required">*</span></label><input autocomplete="email" id="email" name="email" placeholder="alex@example.com" required="" type="email"/></div>
+<div class="field"><label for="phone">Phone number <span class="required">*</span></label><input autocomplete="tel" id="phone" name="phone" pattern="[+0-9() .-]{7,20}" placeholder="+91 98765 43210" required="" type="tel"/><p class="hint">Include your country code.</p></div>
+<div class="field"><label for="city">Current city <span class="required">*</span></label><input id="city" name="city" placeholder="City, country" required=""/></div>
+<div class="field"><label for="country">Country <span class="required">*</span></label><select id="country" name="country" required=""><option value="">Select country</option><option>India</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Germany</option><option>Australia</option><option>Other</option></select></div>
+<div class="field"><label for="linkedin">LinkedIn profile</label><input id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourname" type="url"/></div>
+<div class="field"><label for="portfolio">Portfolio / personal website</label><input id="portfolio" name="portfolio" placeholder="https://yourportfolio.com" type="url"/></div>
+<div class="field full"><label for="github">GitHub profile</label><input id="github" name="github" placeholder="https://github.com/username" type="url"/></div>
+</div>
+<div class="step-actions"><p>Your information stays in this browser demo.</p><button class="next-btn" type="button">Next section →</button></div></section>
+<section class="section wizard-step" data-step="1">
+<div class="section-head"><span class="number">02</span><div><h3>Role &amp; work preferences</h3><p>Tell us what you're looking for.</p></div></div>
+<div class="grid">
+<div class="field"><label for="role">Position applying for <span class="required">*</span></label><select id="role" name="role" required=""><option value="">Choose a position</option><option>Software Engineer — Entry Level</option><option>Frontend Developer</option><option>Backend Developer</option><option>Full Stack Developer</option><option>Data Analyst</option><option>QA / Test Engineer</option><option>Product / UI Designer</option></select></div>
+<div class="field"><label for="source">How did you hear about us?</label><select id="source" name="source"><option value="">Select an option</option><option>Company careers page</option><option>LinkedIn</option><option>Referral</option><option>College placement</option><option>Job portal</option><option>Other</option></select></div>
+<div class="field full"><span class="legend">Preferred work arrangement <span class="required">*</span></span><div class="choice-row">
+<label class="choice"><input name="workMode" required="" type="radio" value="On-site"/> On-site</label>
+<label class="choice"><input name="workMode" type="radio" value="Hybrid"/> Hybrid</label>
+<label class="choice"><input name="workMode" type="radio" value="Remote"/> Remote</label>
+<label class="choice"><input name="workMode" type="radio" value="Flexible"/> Flexible</label>
+</div></div>
+<div class="field"><label for="availability">Earliest start date <span class="required">*</span></label><input id="availability" name="availability" required="" type="date"/></div>
+<div class="field"><label for="salary">Expected annual salary (optional)</label><input id="salary" min="0" name="salary" placeholder="e.g. 600000" step="10000" type="number"/><p class="hint">Enter amount in your local currency.</p></div>
+<div class="field full"><div class="choice-row">
+<label class="choice"><input name="relocate" type="checkbox" value="Yes"/> I am willing to relocate for this role.</label>
+<label class="choice"><input name="sponsorship" type="checkbox" value="Yes"/> I may require work visa sponsorship.</label>
+</div></div>
+</div>
+<div class="step-actions"><button class="back-btn" type="button">← Back</button><button class="next-btn" type="button">Next section →</button></div></section>
+<section class="section wizard-step" data-step="2">
+<div class="section-head"><span class="number">03</span><div><h3>Education</h3><p>Share your most recent or highest qualification.</p></div></div>
+<div class="grid">
+<div class="field"><label for="education">Highest qualification <span class="required">*</span></label><select id="education" name="education" required=""><option value="">Select qualification</option><option>High School</option><option>Diploma</option><option>Bachelor's Degree</option><option>Master's Degree</option><option>PhD</option><option>Other</option></select></div>
+<div class="field"><label for="fieldStudy">Field of study</label><input id="fieldStudy" name="fieldStudy" placeholder="e.g. Computer Science"/></div>
+<div class="field"><label for="institution">College / university <span class="required">*</span></label><input id="institution" name="institution" placeholder="Institution name" required=""/></div>
+<div class="field"><label for="graduation">Graduation year</label><select id="graduation" name="graduation"><option value="">Select year</option><option>2024</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>Other</option></select></div>
+<div class="field full"><label for="grade">Grade / CGPA (optional)</label><input id="grade" name="grade" placeholder="e.g. 8.2 / 10 or 82%"/></div>
+</div>
+<div class="step-actions"><button class="back-btn" type="button">← Back</button><button class="next-btn" type="button">Next section →</button></div></section>
+<section class="section wizard-step" data-step="3">
+<div class="section-head"><span class="number">04</span><div><h3>Experience &amp; skills</h3><p>Experience can include internships, freelance work and projects.</p></div></div>
+<div class="grid">
+<div class="field"><label for="experience">Total relevant experience</label><select id="experience" name="experience"><option value="">Select experience</option><option>Fresher / No experience</option><option>Less than 1 year</option><option>1–2 years</option><option>3–5 years</option><option>5+ years</option></select></div>
+<div class="field"><label for="currentTitle">Current / most recent job title</label><input id="currentTitle" name="currentTitle" placeholder="e.g. Software Developer Intern"/></div>
+<div class="field full"><label for="employer">Current / most recent employer</label><input id="employer" name="employer" placeholder="Company name"/></div>
+<div class="field full"><label for="skills">Key skills <span class="required">*</span></label><input id="skills" name="skills" placeholder="e.g. JavaScript, React, Python, SQL" required=""/><p class="hint">Separate skills with commas.</p></div>
+<div class="field full"><label for="summary">Professional summary <span class="required">*</span></label><textarea id="summary" maxlength="700" name="summary" placeholder="Briefly describe your background, strengths and relevant achievements..." required=""></textarea><p class="hint"><span id="summaryCount">0</span>/700 characters</p></div>
+<div class="field full"><label for="coverLetter">Why are you interested in this role?</label><textarea id="coverLetter" maxlength="1200" name="coverLetter" placeholder="Tell us why this role and company interest you..."></textarea><p class="hint"><span id="coverCount">0</span>/1200 characters</p></div>
+</div>
+<div class="step-actions"><button class="back-btn" type="button">← Back</button><button class="next-btn" type="button">Next section →</button></div></section>
+<section class="section wizard-step" data-step="4">
+<div class="section-head"><span class="number">05</span><div><h3>Documents</h3><p>Upload your resume and any supporting material.</p></div></div>
+<div class="grid">
+<div class="field full"><label for="resume">Resume / CV <span class="required">*</span></label><div class="upload"><strong>Upload your resume</strong><p>PDF, DOC or DOCX · Maximum 5 MB</p><input accept=".pdf,.doc,.docx" id="resume" name="resume" required="" type="file"/><span class="file-name" id="resumeName">No file selected</span></div></div>
+<div class="field full"><label for="extra">Additional document (optional)</label><div class="upload"><strong>Certificates, cover letter or work samples</strong><p>PDF, DOC, DOCX or image · Maximum 5 MB</p><input accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="extra" name="extra" type="file"/><span class="file-name" id="extraName">No file selected</span></div></div>
+</div>
+<div class="step-actions"><button class="back-btn" type="button">← Back</button><button class="next-btn" type="button">Next section →</button></div></section>
+<section class="section wizard-step" data-step="5">
+<div class="section-head"><span class="number">06</span><div><h3>Final details</h3><p>Review the statements before submitting your demo application.</p></div></div>
+<div class="grid">
+<div class="field full"><span class="legend">Are you legally authorized to work in the job location? <span class="required">*</span></span><div class="choice-row">
+<label class="choice"><input name="authorized" required="" type="radio" value="Yes"/> Yes</label>
+<label class="choice"><input name="authorized" type="radio" value="No"/> No</label>
+<label class="choice"><input name="authorized" type="radio" value="Need to confirm"/> Need to confirm</label>
+</div></div>
+<div class="field full"><label class="choice"><input id="accuracy" required="" type="checkbox"/> I confirm that the information provided is accurate and complete. <span class="required">*</span></label></div>
+<div class="field full"><label class="choice"><input id="privacy" required="" type="checkbox"/> I agree to the processing of my information for this recruitment process. <span class="required">*</span></label><p class="hint">Demo only: no data is transmitted or stored by this page.</p></div>
+</div>
+<div class="step-actions"><button class="back-btn" type="button">← Back</button><p>Check your details before completing this demo application.</p><button type="submit">Submit application ✓</button></div></section>
+
+</form>
+</main>
+<footer>© 2026 CareerPortal · Front-end job application form demo</footer>
+<script>
+    const form = document.getElementById('applicationForm');
+    const successNotice = document.getElementById('successNotice');
+
+    function showFileName(inputId, outputId) {
+      const input = document.getElementById(inputId);
+      const output = document.getElementById(outputId);
+      input.addEventListener('change', () => {
+        const file = input.files[0];
+        output.textContent = file ? file.name : 'No file selected';
+        if (file && file.size > 5 * 1024 * 1024) {
+          alert('Please choose a file smaller than 5 MB.');
+          input.value = '';
+          output.textContent = 'No file selected';
+        }
+      });
+    }
+    showFileName('resume', 'resumeName');
+    showFileName('extra', 'extraName');
+
+    function bindCounter(inputId, countId) {
+      const input = document.getElementById(inputId);
+      const count = document.getElementById(countId);
+      const update = () => count.textContent = input.value.length;
+      input.addEventListener('input', update);
+      update();
+    }
+    bindCounter('summary', 'summaryCount');
+    bindCounter('coverLetter', 'coverCount');
+
+    // Set the earliest start date to today.
+    const dateInput = document.getElementById('availability');
+    const today = new Date();
+    dateInput.min = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+
+    // Update progress based on completed required controls.
+    function updateProgress() {
+      const required = [...form.querySelectorAll('[required]')];
+      const completed = required.filter(el => {
+        if (el.type === 'radio') return form.querySelector(`input[name="${el.name}"]:checked`);
+        if (el.type === 'checkbox') return el.checked;
+        return el.type === 'file' ? el.files.length > 0 && el.files[0].size <= 5 * 1024 * 1024 : el.value.trim() !== '';
+      });
+      const percent = Math.round(completed.length / required.length * 100);
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('progressText').textContent = percent + '% completed';
+    }
+    form.addEventListener('input', updateProgress);
+    form.addEventListener('change', updateProgress);
+    updateProgress();
+
+
+    // Multi-step form navigation.
+    const wizardSteps = [...form.querySelectorAll('.wizard-step')];
+    const stepIndicators = [...document.querySelectorAll('.step-item')];
+    let currentStep = 0;
+
+    function showStep(index) {
+      currentStep = index;
+      wizardSteps.forEach((step, i) => step.classList.toggle('active', i === index));
+      stepIndicators.forEach((indicator, i) => {
+        indicator.classList.toggle('active', i === index);
+        indicator.classList.toggle('done', i < index);
+        const circle = indicator.querySelector('.step-circle');
+        circle.textContent = i < index ? '✓' : String(i + 1);
+      });
+      document.getElementById('stepper').setAttribute('aria-label', `Step ${index + 1} of ${wizardSteps.length}: ${stepNames[index]}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const stepNames = ['Personal information', 'Role and preferences', 'Education', 'Experience and skills', 'Documents', 'Final review'];
+
+    function validateCurrentStep() {
+      const controls = [...wizardSteps[currentStep].querySelectorAll('input, select, textarea')];
+      for (const control of controls) {
+        if (!control.checkValidity()) {
+          control.reportValidity();
+          control.focus({ preventScroll: false });
+          return false;
+        }
+      }
+      return true;
+    }
+
+    form.querySelectorAll('.next-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        if (validateCurrentStep()) showStep(Math.min(currentStep + 1, wizardSteps.length - 1));
+      });
+    });
+    form.querySelectorAll('.back-btn').forEach(button => {
+      button.addEventListener('click', () => showStep(Math.max(currentStep - 1, 0)));
+    });
+    showStep(0);
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      successNotice.classList.remove('show');
+      if (!form.reportValidity()) return;
+
+      const files = [...form.querySelectorAll('input[type=file]')];
+      const oversized = files.find(input => input.files[0] && input.files[0].size > 5 * 1024 * 1024);
+      if (oversized) {
+        alert('One of your files is larger than 5 MB.');
+        oversized.focus();
+        return;
+      }
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      successNotice.querySelector('h3').textContent = `Thanks, ${firstName} ${lastName}!`;
+      successNotice.classList.add('show');
+      successNotice.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  </script>
+</body>
+</html>
